@@ -38,13 +38,16 @@ Status outElem_Sq(const ElemType e);
 
 int main( int argc , char *argv[] ){
 	SqList LA;
+	int e = 0;
 	int s1 = CreateList_Sq(&LA);
 	int length_of_LA = ListLength_Sq(&LA);
 	printf("length is %d\n",length_of_LA);
-	int tp = 3;
-	int tt = 0;
-	int s2 = NextElem_Sq(&LA,&tp,&tt);
-	printf ("the elem tt is %d",tt);
+	int x = 7;
+	int s2 = ListInsert_Sq(&LA,3,&x);
+	for(int i = 1;i <=length_of_LA + 1;i ++){
+		int s3 = GetElem_Sq(&LA,i,&e);
+		printf("a[%d] = %d\n",i,e);
+	}
 }
 
 
@@ -166,29 +169,51 @@ Status NextElem_Sq(const SqList *L ,const ElemType *cur_e, ElemType *next_e){
 	}
 }
 Status ListInsert_Sq( SqList *L , int i , const ElemType *e){
-	ElemType temp = 0;
-	if ( i < 0 || i > L -> length){
+	ElemType *newbase = NULL;
+	ElemType *p = NULL;
+	ElemType *q = NULL;
+	if(! L -> elem){
+		fprintf(stderr,"List is not exists!Please initialize list first!\n");
 		return ERROR;
-	}else{
-		for( int flag = L -> length ; flag > L -> length - i + 1;flag --){
-			temp = L -> elem[flag + 1];
-			L -> elem [flag + 1] = L -> elem[flag];
-			L -> elem [flag] = temp;
-		}
-		L -> elem[i] = *e;
-		return OK;
 	}
+	if( i < 1 || i > L -> length + 1){
+		fprintf(stderr,"Insert Failed,Location Of Insert Must In This List");
+		return ERROR;
+	}
+	// 分配一块内存
+	if(L -> length >= L -> listSize ){
+		newbase = (ElemType *) realloc(L -> elem,(L->listSize + LIST_INCREMENT) * sizeof(ElemType));
+		// 如果分配失败
+		if(!newbase){
+			exit(OVERFLOW);
+		}
+		L -> elem = newbase;
+		L -> listSize += LIST_INCREMENT;
+	}
+	q = L -> elem + i - 1;
+	int testq = *q;
+	for(p = L -> elem + L -> length ;p > q; p --){
+		*p = *(p-1);
+	}
+	*p = *e;
+	++ L -> length;
+	return OK;
 }
 Status ListDelete_Sq( SqList *L , int i , ElemType *e){
-	ElemType temp = 0;
-	*e = L -> elem[i];
-	for( int flag = i;flag < L -> length; flag ++){
-		temp = L -> elem[flag - 1];
-		L -> elem[flag - 1] = L -> elem[flag];
-		L -> elem[flag] = temp;
+	ElemType *p = NULL;
+	ElemType *q = NULL;
+	if(! L -> elem){
+		return ERROR;
 	}
-	L -> length --;
-	return *e;
+	if(i < 0 || i > L -> length){
+		fprintf(stderr,"ERROR,i Should Larger Than 0,And Smaller Than Length Of List");
+	}
+	q = L -> elem + L -> length - 1; 
+	*e = L -> elem[i - 1]; 
+	for(p = L -> elem + i - 1;p < q; p ++){
+		*p = *(p + 1);
+	}
+	-- L -> length;
 }
 Status ListTraverse_Sq(const SqList *L , Status (*pvisit)(const ElemType *)){
 	for(int i = 0;i < L -> length; i ++){
@@ -201,4 +226,3 @@ Status outElem_Sq(const ElemType e){
 //	}
 	return OK;
 }
-
