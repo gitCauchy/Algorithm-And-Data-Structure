@@ -39,11 +39,15 @@ Status outElem_Sq(const ElemType e);
 int main( int argc , char *argv[] ){
 	SqList LA;
 	int s1 = CreateList_Sq(&LA);
-	int e;
+	int e = 0;
 	int length_of_LA = ListLength_Sq(&LA);
 	printf("length is %d\n",length_of_LA);
 	int s2 = GetElem_Sq(&LA,2,&e);
 	printf("elem is %d\n",e);
+
+	int testLocate = 2;
+	int loc = LocateElem_Sq(&LA,&testLocate,compare);
+	printf("loc is %d\n",&loc);
 }
 
 
@@ -120,17 +124,18 @@ Status LocateElem_Sq(const SqList *L ,const ElemType *e ,Status (*compare) (cons
 	int flag = 0;
 	ElemType *p = NULL;
 	for( i = 0, p = L -> elem ; i < L-> length; i++ ){
-		if( !(*compare)(p ++,e)){
+		if(!(*compare)(p ++,e)){
 			flag = 0;
 			break;
 		}else{
 			flag = 1;
 		}
-		if(flag == 1){
-			return 0;
-		}else{
-			return i + 1;
-		}
+	}
+	if(flag == 1){
+		return 0;
+	}else{
+		return i + 1;
+	}
 }
 Status PriorElem_Sq(const SqList *L ,const ElemType *cur_e, ElemType *pre_e){
 	int i = 0;
@@ -166,8 +171,6 @@ Status ListInsert_Sq( SqList *L , int i , const ElemType *e){
 		L -> elem[i] = *e;
 		return OK;
 	}
-}
-			
 }
 Status ListDelete_Sq( SqList *L , int i , ElemType *e){
 	ElemType temp = 0;
