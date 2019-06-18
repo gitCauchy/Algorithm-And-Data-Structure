@@ -39,15 +39,12 @@ Status outElem_Sq(const ElemType e);
 int main( int argc , char *argv[] ){
 	SqList LA;
 	int s1 = CreateList_Sq(&LA);
-	int e = 0;
 	int length_of_LA = ListLength_Sq(&LA);
 	printf("length is %d\n",length_of_LA);
-	int s2 = GetElem_Sq(&LA,2,&e);
-	printf("elem is %d\n",e);
-
-	int testLocate = 2;
-	int loc = LocateElem_Sq(&LA,&testLocate,compare);
-	printf("loc is %d\n",&loc);
+	int tp = 3;
+	int tt = 0;
+	int s2 = NextElem_Sq(&LA,&tp,&tt);
+	printf ("the elem tt is %d",tt);
 }
 
 
@@ -138,24 +135,34 @@ Status LocateElem_Sq(const SqList *L ,const ElemType *e ,Status (*compare) (cons
 	}
 }
 Status PriorElem_Sq(const SqList *L ,const ElemType *cur_e, ElemType *pre_e){
-	int i = 0;
-	int j = LocateElem_Sq(L ,cur_e,compare);
-	if ( ! L -> elem){
+	int loc = 0;
+	// L -> elem == NULL
+	if (! L -> elem){
 		return ERROR;
-	}else if ( j != 0 && j != 1 ){
-		return L ->elem[i -1];
-	}else{
-		return ERROR;
+	}else{// L -> elem != NULL
+		loc = LocateElem_Sq(L,cur_e,compare);
+		if(loc != 0 && loc != 1 ){// it is not first elem
+			*pre_e = L -> elem[loc - 2];
+		}else{
+			printf("The element %d is not exist or is the first element",*cur_e);
+		}
 	}
 }
 Status NextElem_Sq(const SqList *L ,const ElemType *cur_e, ElemType *next_e){
-	int i = 0;
-	if ( ! L -> elem){
+	int loc = 0;
+//	int length = ListLength_Sq(L);
+	int length = L -> length;
+	if (! L -> elem){
 		return ERROR;
-	}else if(i = LocateElem_Sq(L , cur_e,compare)!=L->length && LocateElem_Sq(L,cur_e,compare)!= 0){
-		return L->elem[i + 1];
-	}else{
-		return ERROR;
+	}else{// L -> elem != null
+		loc = LocateElem_Sq(L,cur_e,compare);
+		if(loc != 0 && loc != length){
+			*next_e = L -> elem[loc];
+			return OK;
+		}else{
+			printf("The element %d is not exist or is the last element",*cur_e);
+			return ERROR;
+		}
 	}
 }
 Status ListInsert_Sq( SqList *L , int i , const ElemType *e){
