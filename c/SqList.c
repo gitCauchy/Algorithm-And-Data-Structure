@@ -34,7 +34,7 @@ Status ListInsert_Sq( SqList *L , int i , const ElemType *e);
 Status ListDelete_Sq( SqList *L , int i , ElemType *e);
 int compare(const ElemType *e1, const ElemType *e2);
 Status ListTraverse_Sq(const SqList *L , Status (*pvisit)(const ElemType *));
-Status outElem_Sq(const ElemType e);
+Status outElem_Sq(const ElemType *e);
 
 int main( int argc , char *argv[] ){
 	SqList LA;
@@ -42,12 +42,13 @@ int main( int argc , char *argv[] ){
 	int s1 = CreateList_Sq(&LA);
 	int length_of_LA = ListLength_Sq(&LA);
 	printf("length is %d\n",length_of_LA);
-	int x = 7;
-	int s2 = ListInsert_Sq(&LA,3,&x);
-	for(int i = 1;i <=length_of_LA + 1;i ++){
-		int s3 = GetElem_Sq(&LA,i,&e);
-		printf("a[%d] = %d\n",i,e);
-	}
+	int x = 0;
+	int s2 = ListDelete_Sq(&LA,3,&x);
+	ListTraverse_Sq(&LA,outElem_Sq);
+	//for(int i = 1;i <=length_of_LA - 1;i ++){
+	//	int s3 = GetElem_Sq(&LA,i,&e);
+	//	printf("a[%d] = %d\n",i,e);
+	//	}
 }
 
 
@@ -216,13 +217,14 @@ Status ListDelete_Sq( SqList *L , int i , ElemType *e){
 	-- L -> length;
 }
 Status ListTraverse_Sq(const SqList *L , Status (*pvisit)(const ElemType *)){
-	for(int i = 0;i < L -> length; i ++){
-		outElem_Sq( L -> elem[i]);
+	ElemType *p = NULL;
+	ElemType *q = L -> elem + L -> length;
+	for(p = L -> elem;p < q;p ++){
+		(* pvisit)(p);
 	}
+	return OK;
 }
-Status outElem_Sq(const ElemType e){
-//	if ( e != NULL){
-		printf("%d\n", e);
-//	}
+Status outElem_Sq(const ElemType *e){
+	printf("%d\n",*e);
 	return OK;
 }
