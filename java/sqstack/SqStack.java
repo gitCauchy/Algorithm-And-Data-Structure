@@ -43,7 +43,6 @@ public class SqStack implements Stack {
         top++;
     }
 
-
     public Object pop() {
         return elem[--top];
     }
