@@ -38,3 +38,41 @@ Status InOrderTraverse(BiTree *T,Status (*Visit)(ElemType *e));
 Status PostOrderTraverse(BiTree *T,Status (*Visit)(ElemType *e));
 Status LevelTraverse(BiTree *T,int depth);
 Status PrintTreeLevel(BiTree *T,int level);
+Status InitStack(SqStack *S){
+	S -> base = (SElemType *)malloc(STACK_INIT_SIZE * sizeof(SElemType));
+	if(! S -> base){
+		return OVERFLOW;
+	}
+	S -> top = S -> base;
+}
+Status GetTop(SqStack *S,SElemType *e){
+	S -> top --;
+	*e = *(S -> top);
+}
+Status Push(SqStack *S,SElemType *e){
+	if( S -> top >= S-> base + stackSize){
+		S -> base = (SElemType *)realloc(S -> base,(S -> stackSize + STACKINCREMENT)*sizeof(SElemType));
+		if(!S -> top){
+			return OVERFLOW;
+		}
+		S -> top = S -> base + S -> stackSize;
+		S -> stackSize += STACKINCREMENT;
+	}
+	*(S -> top) = *e;
+	S -> top ++;
+}
+Status Pop(SqStack *S,SElemType *e){
+	if(S -> top == S -> base){
+		return ERROR;
+	}
+	S ->top -= 1;
+	*e = *(S -> top);
+	return OK;
+}
+Status StackEmpty(SqStack *S){
+	if(S -> top == S -> base){
+		return TRUE;
+	}else{
+		return FALSE;
+	}
+}
