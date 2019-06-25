@@ -33,4 +33,8 @@ Status GetTop(SqStack *S,SElemType *e);
 Status Push(SqStack *S,SElemType *e);
 Status Pop(SqStack *S,SElemType *e);
 Status StakEmpty(SqStack *S);
-
+Status PreOrderTraverse(BiTree *T,(Status*Visit)(ElemType *e));
+Status InOrderTraverse(BiTree *T,Status (*Visit)(ElemType *e));
+Status PostOrderTraverse(BiTree *T,Status (*Visit)(ElemType *e));
+Status LevelTraverse(BiTree *T,int depth);
+Status PrintTreeLevel(BiTree *T,int level);
