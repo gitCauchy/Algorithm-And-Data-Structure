@@ -138,3 +138,35 @@ Status PostOrderTraverse(BiTree *T,Status(*Visit)(ElemType e)){
 		return ERROR;
 	}
 }
+Status Print(ElemType *e){
+	printf("%c",*e);
+	return OK;
+}
+int TreeDepth(BiTree *T){
+	int lchilddep,rchilddep;
+	if(*T == NULL){
+		return(0);
+	}else{
+		lchilddep = TreeDepth((*T) -> lchild);
+		rchilddep = TreeDepth((*T) -> rchild);
+		return (lchilddep > rchilddep)?(lchilddep + 1):(rchilddep + 1);
+	}
+}
+Status PrintTreeLevel(BiTree *T,int level){
+	if( *T == NULL || level < 1){
+		return 0;
+	}
+	if( level == 1){
+		Print(T -> data);
+		return OK;
+	}
+}
+Status LevelTraverse(BiTree *T,int deepth){
+	int i = 0;
+	if(*T == NULL){
+		return ERROR;
+	}
+	for(int i = 1;i <= deepth;i++){
+		PrintTreeLevel(*T,i);
+	}
+}
