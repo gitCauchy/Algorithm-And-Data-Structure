@@ -76,3 +76,65 @@ Status StackEmpty(SqStack *S){
 		return FALSE;
 	}
 }
+Status CreateBiTree(BiTree *T){
+	ElemType ch;
+	scanf("%c",&ch);
+	getchar();// get enter character
+	if(ch == '#'){
+		*T = NULL
+	}else{
+		if(! (*T = (TreeNode*)malloc(sizeof(TreeNode)))){
+			exit(OVERFLOW);
+		}
+		(*T) -> data = ch;
+		CreateBiTree(&((*T) -> lchild));
+		CreateBiTree(&((*T) -> rchild));
+	}
+	return OK;
+}
+Status PreOrderTraverse(BiTree *T,Status (*Visit)(ElemType e)){
+	if(*T){
+		if(Visit((*T) -> data)){
+			if(PreOrderTraverse(&((*T) -> lchild),Print)){
+				if(PreOrderTraverse(&((*T) -> rchild),Print)){
+					return OK;
+				}
+				return ERROR;
+			}
+		}
+	}
+	else{
+		return OK;
+	}
+}
+Status InOrderTraverse(BiTree *T,Status (*Visit)(ElemType e)){
+	SqStack S;
+	InitStack(&S);
+	BiTree p = T;
+	while(p || StackEmpty(&S)){
+		if(p){
+			Push(&S,p);
+			p = p -> lchild;
+		}else{
+			Pop(&S,&p);
+			if(!Visit(p -> data)){
+				return ERROR;
+			}
+			p = p -> rchild;
+		}
+	}
+}
+Status PostOrderTraverse(BiTree *T,Status(*Visit)(ElemType e)){
+	if(*T){
+		if(PostOrderTraverse(&((*T) -> lchild))){
+			if(PostOrderTraverse(&((*T) -> rchild))){
+				if(Visit((*T) -> data)){
+					return OK;
+				}
+				return ERROR;
+			}
+		}
+	}else{
+		return ERROR;
+	}
+}
