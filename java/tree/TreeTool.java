@@ -182,7 +182,7 @@ public class TreeTools {
         if(root == null || lNode == null || rNode == null){
             return null;
         }
-        //如果lNode是左子树的节点
+    
         if (nodeIsChild(root.leftChild,lNode)){
             if(nodeIsChild(root.rightChild,rNode)){
                 return root;
@@ -210,13 +210,13 @@ public class TreeTools {
             return new TreeNode<T>(pre.get(0));
         }
         TreeNode<T> root = new TreeNode<T>(pre.get(0));
-        //找出根节点在中序中的位置
+      
         int index = 0;
         while (!mid.get(index++).equals(pre.get(0))){
         }
-        //构建左子树的前序
+     
         List<T> preLeft = new ArrayList<T>(index);
-        //左子树的中序
+        
         List<T> midLeft  = new ArrayList<T>(index);
         for(int i = 1; i< index; i++){
             preLeft.add(pre.get(i));
@@ -225,11 +225,10 @@ public class TreeTools {
             midLeft.add(mid.get(i));
         }
 
-        //重建左子树
-;        root.leftChild = getTreeFromPreAndMid(preLeft,midLeft);
-        //右子树的前序
+            root.leftChild = getTreeFromPreAndMid(preLeft,midLeft);
+        
         List<T> preRight = new ArrayList<T>(pre.size() - index - 1);
-        //右子树的中序
+        
         List<T> midRight = new ArrayList<T>(pre.size() - index -1);
         for (int i = 0;i <= pre.size() - index - 1;i++){
             preRight.add(pre.get(index + i));
@@ -237,7 +236,7 @@ public class TreeTools {
         for(int i = 0;i <= pre.size() - index -1;i++){
             midRight.add(mid.get(index + i));
         }
-        //重建子树
+     
         root.rightChild = getTreeFromPreAndMid(preRight,midRight);
         return root;
     }
