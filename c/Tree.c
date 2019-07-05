@@ -38,6 +38,22 @@ Status InOrderTraverse(BiTree *T,Status (*Visit)(ElemType *e));
 Status PostOrderTraverse(BiTree *T,Status (*Visit)(ElemType *e));
 Status LevelTraverse(BiTree *T,int depth);
 Status PrintTreeLevel(BiTree *T,int level);
+int main( int argc,char *argv[]){
+	int deepth = 0;
+	BiTree Tree = NULL;
+	printf("Input some characters,End with #:\n");
+	CreateBiTree(&Tree);
+	deepth = TreeDepth(Tree);
+	printf("The PreOrder is :\n");
+	PreOrderTraverse(&Tree,Print);
+	printf("The InOrder is :\n");
+	InOrderTraverse(&Tree,Print);
+	printf("The PostOrder is :\n");
+	PostOrderTraverse(&Tree,Print);
+	printf("The Level Traverse is :\n");
+	LevelTraverse(&Tree,deepth);
+}
+
 Status InitStack(SqStack *S){
 	S -> base = (SElemType *)malloc(STACK_INIT_SIZE * sizeof(SElemType));
 	if(! S -> base){
@@ -50,7 +66,7 @@ Status GetTop(SqStack *S,SElemType *e){
 	*e = *(S -> top);
 }
 Status Push(SqStack *S,SElemType *e){
-	if( S -> top >= S-> base + stackSize){
+	if( S -> top >= S-> base + S -> stackSize){
 		S -> base = (SElemType *)realloc(S -> base,(S -> stackSize + STACKINCREMENT)*sizeof(SElemType));
 		if(!S -> top){
 			return OVERFLOW;
